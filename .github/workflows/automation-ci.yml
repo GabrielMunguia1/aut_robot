@@ -1,0 +1,57 @@
+name: QA Automation CI - Applitools Demo
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  docker-automation-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show project structure
+        run: |
+          pwd
+          ls -la
+          find . -maxdepth 3 -type f
+
+      - name: Build Docker image
+        run: |
+          docker build -t qa-automation-360-applitools-demo .
+
+      - name: Create output folders
+        run: |
+          mkdir -p results
+          mkdir -p evidence
+
+      - name: Run Robot Framework tests in Docker
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/results:/app/results \
+            -v ${{ github.workspace }}/evidence:/app/evidence \
+            qa-automation-360-applitools-demo
+
+      - name: Upload Robot Framework results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: robot-framework-results
+          path: |
+            results/output.xml
+            results/log.html
+            results/report.html
+
+      - name: Upload evidence screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-screenshots
+          path: evidence/

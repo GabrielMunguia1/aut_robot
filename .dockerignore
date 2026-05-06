@@ -1,0 +1,9 @@
+.venv
+venv
+results
+evidence
+__pycache__
+*.pyc
+.git
+.gitignore
+README.md
