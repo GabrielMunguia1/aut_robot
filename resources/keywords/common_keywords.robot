@@ -15,6 +15,7 @@ Abrir Navegador En Aplicacion
         ${arg_ignore_cert}=           Set Variable    --ignore-certificate-errors
         ${arg_disable_extensions}=    Set Variable    --disable-extensions
         ${arg_remote_origins}=        Set Variable    --remote-allow-origins=*
+        ${arg_user_agent}=            Set Variable    --user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36
 
         Call Method    ${options}    add_argument    ${arg_headless}
         Call Method    ${options}    add_argument    ${arg_no_sandbox}
@@ -24,15 +25,17 @@ Abrir Navegador En Aplicacion
         Call Method    ${options}    add_argument    ${arg_ignore_cert}
         Call Method    ${options}    add_argument    ${arg_disable_extensions}
         Call Method    ${options}    add_argument    ${arg_remote_origins}
+        Call Method    ${options}    add_argument    ${arg_user_agent}
 
-        Open Browser    ${BASE_URL}    chrome    options=${options}
+        Open Browser    about:blank    chrome    options=${options}
     ELSE
-        Open Browser    ${BASE_URL}    ${BROWSER}
+        Open Browser    about:blank    ${BROWSER}
         Maximize Browser Window
     END
 
     Set Selenium Timeout    ${TIMEOUT}
     Go To    ${BASE_URL}
+    Wait Until Page Contains    Login Form    30s
 
 Cerrar Navegador
     Close Browser
@@ -40,3 +43,13 @@ Cerrar Navegador
 Capturar Evidencia
     [Arguments]    ${nombre_evidencia}
     Capture Page Screenshot    evidence/${nombre_evidencia}.png
+
+Capturar Evidencia Si Falla
+    Run Keyword If Test Failed    Capture Page Screenshot    evidence/fallo_test.png
+
+Imprimir Diagnostico Navegador
+    ${url_actual}=    Get Location
+    ${titulo}=        Get Title
+    Log To Console    URL actual: ${url_actual}
+    Log To Console    Titulo actual: ${titulo}
+    Capture Page Screenshot    evidence/diagnostico_inicio.png
