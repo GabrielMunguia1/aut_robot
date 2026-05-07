@@ -35,7 +35,6 @@ Abrir Navegador En Aplicacion
 
     Set Selenium Timeout    ${TIMEOUT}
     Go To    ${BASE_URL}
-    Wait Until Page Contains    Login Form    30s
 
 Cerrar Navegador
     Close Browser
@@ -44,12 +43,12 @@ Capturar Evidencia
     [Arguments]    ${nombre_evidencia}
     Capture Page Screenshot    evidence/${nombre_evidencia}.png
 
-Capturar Evidencia Si Falla
-    Run Keyword If Test Failed    Capture Page Screenshot    evidence/fallo_test.png
-
 Imprimir Diagnostico Navegador
     ${url_actual}=    Get Location
     ${titulo}=        Get Title
     Log To Console    URL actual: ${url_actual}
     Log To Console    Titulo actual: ${titulo}
     Capture Page Screenshot    evidence/diagnostico_inicio.png
+
+Capturar Evidencia Si Falla
+    Run Keyword If Test Failed    Capture Page Screenshot    evidence/fallo_test.png
