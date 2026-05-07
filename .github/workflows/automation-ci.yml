@@ -45,14 +45,14 @@ jobs:
         with:
           name: robot-framework-results
           path: |
-            results/output.xml
-            results/log.html
-            results/report.html
+            results/
+          if-no-files-found: ignore
 
       - name: Upload evidence screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: evidence-screenshots
-          path: evidence/
+          path: |
+            evidence/
           if-no-files-found: ignore

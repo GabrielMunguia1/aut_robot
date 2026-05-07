@@ -1,5 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
+Library    OperatingSystem
 Resource   ../../variables/global_variables.robot
 
 *** Keywords ***
@@ -46,9 +47,11 @@ Capturar Evidencia
 Imprimir Diagnostico Navegador
     ${url_actual}=    Get Location
     ${titulo}=        Get Title
+    ${source}=        Get Source
     Log To Console    URL actual: ${url_actual}
     Log To Console    Titulo actual: ${titulo}
     Capture Page Screenshot    evidence/diagnostico_inicio.png
+    Create File    evidence/page_source.html    ${source}
 
 Capturar Evidencia Si Falla
     Run Keyword If Test Failed    Capture Page Screenshot    evidence/fallo_test.png
