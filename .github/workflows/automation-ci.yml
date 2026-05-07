@@ -1,4 +1,4 @@
-name: QA Automation CI - Applitools Demo
+name: QA Automation CI - Build Validation
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  docker-automation-test:
+  docker-build-validation:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,32 +27,22 @@ jobs:
         run: |
           docker build -t qa-automation-360-applitools-demo .
 
-      - name: Create output folders
+      - name: Validate Robot Framework structure with dryrun
+        run: |
+          docker run --rm qa-automation-360-applitools-demo \
+            python -m robot --dryrun -d results tests/
+
+      - name: Create artifact folders
+        if: always()
         run: |
           mkdir -p results
           mkdir -p evidence
 
-      - name: Run Robot Framework tests in Docker
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}/results:/app/results \
-            -v ${{ github.workspace }}/evidence:/app/evidence \
-            qa-automation-360-applitools-demo
-
-      - name: Upload Robot Framework results
+      - name: Upload Robot Framework validation results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: robot-framework-results
+          name: robot-framework-validation-results
           path: |
             results/
-          if-no-files-found: ignore
-
-      - name: Upload evidence screenshots
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: evidence-screenshots
-          path: |
-            evidence/
           if-no-files-found: ignore
