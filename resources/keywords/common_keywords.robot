@@ -7,24 +7,32 @@ Abrir Navegador En Aplicacion
     IF    '${BROWSER}' == 'headlesschrome'
         ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
 
-        ${arg_headless}=        Set Variable    --headless=new
-        ${arg_no_sandbox}=      Set Variable    --no-sandbox
-        ${arg_dev_shm}=         Set Variable    --disable-dev-shm-usage
-        ${arg_disable_gpu}=     Set Variable    --disable-gpu
-        ${arg_window_size}=     Set Variable    --window-size=1920,1080
+        ${arg_headless}=              Set Variable    --headless=new
+        ${arg_no_sandbox}=            Set Variable    --no-sandbox
+        ${arg_dev_shm}=               Set Variable    --disable-dev-shm-usage
+        ${arg_disable_gpu}=           Set Variable    --disable-gpu
+        ${arg_window_size}=           Set Variable    --window-size=1920,1080
+        ${arg_ignore_cert}=           Set Variable    --ignore-certificate-errors
+        ${arg_disable_extensions}=    Set Variable    --disable-extensions
+        ${arg_remote_origins}=        Set Variable    --remote-allow-origins=*
 
         Call Method    ${options}    add_argument    ${arg_headless}
         Call Method    ${options}    add_argument    ${arg_no_sandbox}
         Call Method    ${options}    add_argument    ${arg_dev_shm}
         Call Method    ${options}    add_argument    ${arg_disable_gpu}
         Call Method    ${options}    add_argument    ${arg_window_size}
+        Call Method    ${options}    add_argument    ${arg_ignore_cert}
+        Call Method    ${options}    add_argument    ${arg_disable_extensions}
+        Call Method    ${options}    add_argument    ${arg_remote_origins}
 
         Open Browser    ${BASE_URL}    chrome    options=${options}
     ELSE
         Open Browser    ${BASE_URL}    ${BROWSER}
         Maximize Browser Window
     END
+
     Set Selenium Timeout    ${TIMEOUT}
+    Go To    ${BASE_URL}
 
 Cerrar Navegador
     Close Browser

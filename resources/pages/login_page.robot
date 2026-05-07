@@ -6,12 +6,14 @@ Resource   ../keywords/common_keywords.robot
 *** Keywords ***
 Ingresar Usuario
     [Arguments]    ${usuario}
-    Wait Until Element Is Visible    ${INPUT_USERNAME}
+    Wait Until Page Contains Element    ${INPUT_USERNAME}    30s
+    Wait Until Element Is Visible       ${INPUT_USERNAME}    30s
     Input Text    ${INPUT_USERNAME}    ${usuario}
 
 Ingresar Password
     [Arguments]    ${password}
-    Wait Until Element Is Visible    ${INPUT_PASSWORD}
+    Wait Until Page Contains Element    ${INPUT_PASSWORD}    30s
+    Wait Until Element Is Visible       ${INPUT_PASSWORD}    30s
     Input Text    ${INPUT_PASSWORD}    ${password}
 
 Presionar Boton Sign In

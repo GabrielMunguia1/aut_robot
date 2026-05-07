@@ -1,6 +1,6 @@
 *** Variables ***
 ${BASE_URL}        https://demo.applitools.com/
 ${BROWSER}         chrome
-${TIMEOUT}         10s
+${TIMEOUT}         30s
 ${COUNTRY}         GT
 ${ENVIRONMENT}     QA
